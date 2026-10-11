@@ -1,69 +1,173 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Compass } from "lucide-react";
+import { ButtonLink } from "@/components/ui/Button";
+import { Badge, DemoBadge } from "@/components/ui/Badge";
+import { Card, LinkCard } from "@/components/ui/Card";
+import { Container, Section, SectionHeading } from "@/components/ui/Section";
+import { pillars } from "@/data/pillars";
+import { programs } from "@/data/programs";
+import { publishedAnnouncements, publishedEvents } from "@/data/demo";
+import { site } from "@/data/site";
+import { formatDate, formatDateTime } from "@/lib/utilities/cn";
 
-export default function Home() {
+export default function HomePage() {
+  const news = publishedAnnouncements().slice(0, 3);
+  const upcoming = publishedEvents().slice(0, 3);
+  const featured = programs.slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-navy bg-chart text-white">
+        <Compass
+          aria-hidden
+          className="pointer-events-none absolute -right-16 -top-16 h-96 w-96 text-white/5"
+          strokeWidth={0.75}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+        <Container className="relative py-16 sm:py-24">
+          <p className="mb-4 text-xs font-bold uppercase tracking-widest text-gold">
+            BSMT Student Leadership Platform
           </p>
+          <h1 className="max-w-3xl text-4xl font-extrabold leading-tight sm:text-6xl">
+            One crew.
+            <br />
+            One direction.
+            <br />
+            <span className="text-gold">One standard.</span>
+          </h1>
+          <p className="mt-6 text-xl font-semibold text-white/90">
+            {site.commitments}
+          </p>
+          <p className="mt-4 max-w-xl text-white/75">
+            SAILS 360 brings academic support, leadership, welfare,
+            camaraderie and maritime excellence together for every BSMT
+            student.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ButtonLink href="/programs">Explore Our Programs</ButtonLink>
+            <ButtonLink href="/sails-360" variant="outline-light">
+              Discover SAILS 360
+            </ButtonLink>
+          </div>
+        </Container>
+      </section>
+
+      {/* Who and how */}
+      <Section>
+        <SectionHeading
+          eyebrow="What SAILS does"
+          title="Five pillars. One BSMT community."
+          description="SAILS serves BSMT students. You can browse everything without an account and join in through programs, events and feedback."
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {pillars.map((p) => (
+            <LinkCard key={p.slug} href={`/sails-360/${p.slug}`}>
+              <h3 className="text-lg font-bold text-navy">{p.title}</h3>
+              <p className="mt-2 text-sm text-slate-soft">{p.tagline}</p>
+            </LinkCard>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </Section>
+
+      {/* Programs */}
+      <Section tone="mist">
+        <SectionHeading
+          eyebrow="Platform programs"
+          title="Ten programs, one direction"
+          description="Details marked “to be confirmed” will be filled in by officers."
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((p) => (
+            <LinkCard key={p.slug} href={`/programs/${p.slug}`}>
+              <h3 className="font-bold text-navy">{p.title}</h3>
+              <p className="mt-2 text-sm text-slate-soft">{p.summary}</p>
+            </LinkCard>
+          ))}
         </div>
-      </main>
-    </div>
+        <div className="mt-6">
+          <Link
+            href="/programs"
+            className="inline-flex items-center gap-1 font-semibold text-ocean hover:underline"
+          >
+            See all ten programs <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+      </Section>
+
+      {/* Announcements + events */}
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-2">
+          <div>
+            <SectionHeading title="Latest announcements" />
+            <ul className="space-y-4">
+              {news.map((a) => (
+                <li key={a.slug}>
+                  <Card>
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <Badge tone="ocean">{a.category}</Badge>
+                      {a.isDemo && <DemoBadge />}
+                    </div>
+                    <h3 className="font-bold text-navy">
+                      <Link
+                        href={`/announcements/${a.slug}`}
+                        className="hover:underline"
+                      >
+                        {a.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-soft">
+                      {formatDate(a.publishedAt)}
+                    </p>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <SectionHeading title="Upcoming events" />
+            <ul className="space-y-4">
+              {upcoming.map((e) => (
+                <li key={e.slug}>
+                  <Card>
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <Badge tone="gold">{e.category}</Badge>
+                      {e.isDemo && <DemoBadge />}
+                    </div>
+                    <h3 className="font-bold text-navy">
+                      <Link
+                        href={`/events/${e.slug}`}
+                        className="hover:underline"
+                      >
+                        {e.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-soft">
+                      {formatDateTime(e.startsAt)} · {e.location}
+                    </p>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* Feedback CTA */}
+      <Section tone="navy">
+        <div className="max-w-2xl">
+          <h2 className="text-3xl font-extrabold">Your voice sets our course.</h2>
+          <p className="mt-3 text-white/80">
+            Share a suggestion, or raise a private concern. They are separate
+            on purpose, and we explain who can see each one.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <ButtonLink href="/feedback">Give feedback</ButtonLink>
+            <ButtonLink href="/digital-hub" variant="outline-light">
+              Open the Digital Hub
+            </ButtonLink>
+          </div>
+        </div>
+      </Section>
+    </>
   );
 }
